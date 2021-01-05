@@ -5,9 +5,11 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 public class TestHelper {
 
@@ -16,26 +18,19 @@ public class TestHelper {
     public String MovieID(String key, String word, String title)
     {
         RestAssured.baseURI = baseURI;
-        String movieId = null;
         try
         {
             Response response = getResponseFromEndPoint(key,word);
             JsonPath jsonPath = response.jsonPath();
             List<Movie> info = jsonPath.getList("Search", Movie.class);
+            Predicate<Movie> findRightTitle = movie -> movie.getTitle().equals(title);
             System.out.println(info.size()+" films are found related your keyword");
-            for (Movie object : info) { //get id if title matches
-                if (object.getTitle().equals(title))
-                {
-                    movieId = object.getImdbID();
-                    System.out.println("ID: " + movieId);
-                    break;
-                }
-            }
-            return movieId;
+
+            return info.stream().filter(findRightTitle).collect(Collectors.toList()).get(0).getImdbID();
         }
         catch (Exception e)
         {
-            System.out.println("Error occurred");
+            System.out.println("Can not find the movie " + title);
             return null;
         }
     }
@@ -63,7 +58,7 @@ public class TestHelper {
         }
         catch (Exception e)
         {
-            System.out.println("Error occurred");
+            System.out.println("Invalid Response from API");
             return null;
         }
     }
@@ -87,7 +82,7 @@ public class TestHelper {
         }
         catch (Exception e)
         {
-            System.out.println("Error occurred");
+            System.out.println("Can not find the movie " + movieId);
         }
     }
 
