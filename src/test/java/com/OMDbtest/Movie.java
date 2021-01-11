@@ -6,6 +6,7 @@ public class Movie {
     public String Title;
     public String Poster;
     public String Type;
+    public String Director;
 
     public String getImdbID()
     {
@@ -50,6 +51,14 @@ public class Movie {
     public void setType(String type)
     {
         this.Type = type;
+    }
+    public String getDirector()
+    {
+        return Director;
+    }
+    public void setDirector(String director)
+    {
+        this.Director = director;
     }
 }
 

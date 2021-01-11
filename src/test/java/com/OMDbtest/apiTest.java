@@ -1,4 +1,6 @@
 package com.OMDbtest;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 public class apiTest
@@ -10,7 +12,16 @@ public class apiTest
     String key = System.getProperty("apikey","c9b0e068"); // I created a free api key
     @Test
     public void shouldFindMovieWithId(){
-        String id = testHelper.MovieID(key, word, title);
-        testHelper.IDSearch(key, id);
+        Movie movie = testHelper.findMovie(key, word, title);
+        Assert.assertEquals("tt0241527", movie.getImdbID());
+        String IdSearchTitle = testHelper.IDSearch(key, movie.getImdbID());
+        Assert.assertEquals("Harry Potter and the Sorcerer's Stone",IdSearchTitle);
+    }
+    @Test
+    public void movieDirectorShouldMatch()
+    {
+        Movie movie = testHelper.findMovie(key, word, title);
+        Assert.assertEquals("Harry Potter and the Sorcerer's Stone",movie.getTitle());
+        testHelper.getDirector(key, movie.getImdbID(),"Chris Columbus");
     }
 }
