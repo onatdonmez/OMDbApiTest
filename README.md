@@ -5,7 +5,6 @@ I created and tested the following cases using the public api at http://www.omdb
 
 2.Search movies with this id in the methods under "By ID or Title".
 
-General:
-1.You have to do this in Java language in a maven project where you use the Rest Assured library.
-2.In the response, it will be enough to check whether the title, year, released fields of the data are displayed and the http status.
+You have to do this in Java language in a maven project where you use the Rest Assured library.
+
   
